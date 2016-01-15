@@ -1,0 +1,135 @@
+#include<iostream>
+#include<time.h>
+#include<list>
+using namespace std;
+const int a = 10;
+
+
+
+struct Element{
+public:
+	int value;
+	int count;
+public:
+	Element()
+	{
+		value = NULL;
+		count = NULL;
+	}
+
+	Element(int _count, int _value)
+	{
+		count = _count;
+		value = _value;	
+	}
+
+	void print()
+	{
+		cout << "Value is:" << value;
+		cout << endl;
+		cout << "Count is:" << count;
+		cout << endl;
+		cout <<" || || || || || || ||" ;
+		cout << endl;
+    }
+
+    };
+
+void Unsparse(list  <Element> other)
+{
+
+	list  <Element> helplist = other;
+	for (list<Element>::iterator it = other.begin(); it != other.end(); ++it)
+	{
+		for (int f = 0; f < helplist.back().count; f++)
+		{
+			cout << helplist.back().value;
+		}
+		helplist.pop_back();
+
+
+
+	}
+
+
+}
+int main()
+{
+	
+	int mass[a];
+	for (int i = 0; i < a; i++)
+	{
+		mass[i] = rand() % 2;
+	}
+	
+	for (int i = 0; i < a; i++)
+	{
+		cout<<mass[i] ;
+	}
+	
+     
+	list  <Element> masslist;
+
+	for (int j = 0; j < a; j++)
+	{
+		if (j == 0)
+		{
+			masslist.emplace_front();
+			masslist.front().value = mass[j];
+			masslist.front().count = 1;
+
+		}
+
+		else if (j==1)
+		{
+			if (mass[j] != mass[j - 1])
+			{
+				masslist.emplace_front();
+				masslist.front().value = mass[j];
+				masslist.front().count = 1;
+			}
+
+			else
+			{
+				masslist.front().count++;
+			}
+			
+		
+		}
+
+		else
+		{
+			if (mass[j] != mass[j - 1])
+			{
+				masslist.emplace_front();
+				masslist.front().value = mass[j];
+				masslist.front().count = 1;
+				
+			}
+			else
+			{
+				masslist.front().count++;
+			}
+		}
+
+
+	}
+	list  <Element> masslisthelp = masslist;
+	for (list<Element>::iterator it = masslist.begin(); it != masslist.end(); ++it)
+	{
+		masslisthelp.back().print();
+		masslisthelp.pop_back();
+	}
+
+	Unsparse(masslist);
+
+
+
+
+
+
+
+
+	system("pause");
+	return 0;
+}
