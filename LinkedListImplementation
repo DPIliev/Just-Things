@@ -1,0 +1,232 @@
+#include<iostream>
+using namespace std;
+
+struct Node
+{
+    int data;
+	Node* next;
+
+};
+
+
+class LList
+{
+public:
+	Node* start;
+	Node* end;
+public:
+	LList()
+	{
+	  start=nullptr;
+	  end=nullptr;
+	}
+
+
+
+	LList(const LList& other)
+	{
+		if(other.start==nullptr)
+		{
+		   start=nullptr;
+		   end=nullptr;
+		}
+
+		else
+		{
+			Node* tmp=other.start;
+		    Node* tmp2=new Node;
+			start=tmp2;
+			while(tmp->next != nullptr)
+			{
+			   tmp2->data=tmp->data;
+			   Node* tmp3=new Node;
+			   tmp2->next=tmp3;
+			   tmp2=tmp3;
+			   tmp=tmp->next;
+			}
+			tmp2->data=tmp->data;
+			tmp2->next=nullptr;
+			end=tmp2;
+		}
+	
+	}
+
+	LList& operator=(const LList& other)
+	{
+	    if(this != &other)
+		{
+			while(start != end)
+		  {
+		     Node* tmp=start->next;
+			 delete start;
+			 start=tmp;
+		  
+		  }
+			delete start;
+
+		 if(other.start==nullptr)
+		 {
+		    start=nullptr;
+			end=nullptr;		 
+		 }
+
+		 else
+		 {
+		   Node* tmp=other.start;
+		   Node* tmp2=new Node;
+		   start=tmp2;
+
+		   while(tmp->next != nullptr)
+		   {
+		      tmp2->data=tmp->data;
+			  Node* tmp3=new Node;
+			  tmp2->next=tmp3;
+			  tmp2=tmp3;
+			  tmp=tmp->next;		   
+		   }
+
+		   tmp2->data=tmp->data;
+		   tmp2->next=nullptr;
+		   end=tmp2;
+		 
+		 }
+		
+		}
+
+		return *this;
+
+	}
+
+	~LList()
+	{
+		if(start != nullptr)
+		{
+	      while(start != end)
+	      {
+		   Node* tmp=start->next;
+		   delete start;
+		   start=tmp;
+		   tmp=tmp->next;
+	      }
+		  delete start;
+		}
+		
+	}
+
+	void toEnd(int x)
+	{
+		if(start==nullptr)
+		{
+		 start=new Node;
+		 start->data=x;
+		 start->next=nullptr;
+		 end=start;
+		
+		}
+		else
+		{
+		Node* tmp=new Node;
+		end->next=tmp;
+		end=tmp;
+		end->data=x;
+		end->next=nullptr;
+		}
+	
+	}
+
+	void insertAfter(Node* node,int x)
+	{
+		Node* tmp=start;
+		while(tmp != node)		
+		tmp=tmp->next;
+		Node* tmp2=new Node;
+		tmp2->next=tmp->next;
+		tmp->next=tmp2;
+		tmp2->data=x;
+			   
+	
+	 
+	}
+
+	void insertBefore(Node* node,int x)
+	{
+		Node* tmp2=new Node;
+		Node* tmp=start;
+		while(tmp != node)	
+		{
+		tmp2=tmp;
+		
+		tmp=tmp->next;
+		
+	
+		}
+		Node* tmp3=new Node;
+		tmp3->next=tmp2->next;
+		tmp2->next=tmp3;
+		tmp3->data=x;
+				 
+	}
+
+	void removeAfter(Node* node)
+	{
+	   Node* tmp=start;
+	   while(tmp != node)
+	   tmp=tmp->next;
+	   Node* tmp2=tmp->next;
+	   tmp->next=tmp2->next;
+	   delete tmp2;
+	  
+	
+	
+	}
+
+	void print()
+	{
+		if(start==nullptr)
+		{
+		  cout<<"List is empty";
+		}
+		else
+		{
+	      Node* tmp=start;
+	      while (tmp != end)
+	      {
+	         cout<<tmp->data<<endl;
+		     tmp=tmp->next;	    
+	      }
+	      cout<<end->data<<endl;
+		}
+	
+	}
+
+};
+
+int main()
+{
+	LList  a;
+	a.toEnd(5);
+	a.toEnd(2);
+	a.toEnd(16);
+	a.toEnd(4);
+	a.insertBefore(a.start->next,96);
+	a.removeAfter(a.start);
+	a.removeAfter(a.start);
+	
+	a.print();
+	
+	LList  b;
+	b.toEnd(3);
+	b.toEnd(14);
+	b.toEnd(9);
+	b.toEnd(21);
+
+	a=b;
+
+	a.print();
+	
+	
+
+system("pause");
+return 0;
+}
+
