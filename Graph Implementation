@@ -1,0 +1,389 @@
+#include <cstdlib>
+#include <iostream>
+#include <list>
+#include <stack>
+
+using namespace std;
+
+    
+
+     class Graph
+   {
+           public:
+                   list< list<int> > vertexes;
+                   list<int> visitedDFS;
+           
+                  void addVertex(list<int> vertex)
+                  {
+                     vertexes.push_back(vertex);     
+                  }
+                  
+                  void addEdge(int from,int to)
+                  {
+                     for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                     {
+                          if ((*it).front()== from)   
+                          {
+                            (*it).push_back(to);                  
+                          } 
+                     } 
+                  }
+                  
+                 
+                  
+                  
+                  void removeVertex(int vertex)
+                  {
+                       
+                    for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                    {
+                       if((*it).front()== vertex) 
+                       {
+                          vertexes.erase(it);   
+                          break;             
+                       }          
+                    } 
+                   
+                    for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                    {
+                        removeEdge((*it).front(),vertex);
+                    }
+                    
+                      
+                  }
+                  
+                  void removeEdge(int vertex,int edge)
+                  {
+                         for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                         {
+                           if((*it).front() == vertex) 
+                           {
+                             for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                             {
+                                                  cout<<"WUHT";
+                                                  
+                                if((*it2)==edge) 
+                                {
+                                   (*it).erase(it2);  
+                                   break;               
+                                }
+                                
+                                                    
+                             }  
+                                          
+                           }   
+                                      
+                         }
+                       
+                  }
+                  
+                  
+                  
+                  bool isVertex(int vertex)
+                  {
+                       int i=0;
+                      for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                         {
+                           if((*it).front() == vertex) 
+                           {
+                           return true;
+                           }
+                         }    
+                         cout<<"WADDUP";
+                         return false;  
+                  }
+                  
+                  bool isEdge(int ver1,int ver2)
+                  {
+                       for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                         {
+                           if( (*it).front() == ver1 )
+                           {
+                              
+                                for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                                {    
+                                    if((*it2)==ver2)
+                                    return true;                 
+                                }   
+                           }
+                           
+                            else if( (*it).front() == ver2 )
+                           {
+                                for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                                {
+                                    if((*it2)==ver1)
+                                    return true;                 
+                                }   
+                           }
+                        }
+                        
+                        
+                        return false;
+                       
+                       
+                  }
+                  
+                  bool isEmpty()
+                  {
+                   if (vertexes.empty())
+                   return true;
+                   
+                   return false;     
+                  }
+                  
+                  void print()
+                  {
+                        for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                        {
+                                       cout<<"Vertex:"<<endl;
+                                       for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                                       {
+                                          cout<<(*it2);
+                                          cout<<endl;                  
+                                       }
+                                       
+                                       
+                                            
+                        }
+                          
+                  }
+          
+                  bool help(list<int> visited,int current)
+                  {
+                      for(std::list<int>::iterator it=visited.begin();it!=visited.end();it++)  
+                      {
+                         if(current == *it)    
+                         return true;                      
+                      }
+                      return false;
+                  }
+                  
+                  
+                  void DFS(int begin)
+                  {
+                     
+                     
+                     visitedDFS.push_back(begin);
+                     
+                      for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                        {
+                                       if((*it).front()==begin)
+                                       for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                                       {
+                                            if(!help(visitedDFS,*it2)) 
+                                            {
+                                                 cout<<*it2;
+                                                 DFS(*it2);                   
+                                            }               
+                                       }
+                        }
+                  }
+                  
+                  void BFS(int begin)
+                  {
+                      list<int> visited;
+                      visited.push_back(begin);
+                      
+                      list<int> queue;
+                      
+                      queue.push_back(begin);
+                      
+                      
+                      while(!queue.empty())
+                      {
+                          begin=queue.front();
+                          queue.pop_front(); 
+                          
+                           for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                           {
+                                       if((*it).front()==begin)
+                                       {
+                                       for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++) 
+                                         {
+                                          if(!help(visited,(*it2)))
+                                            {
+                                             cout<<*it2;
+                                             visited.push_back(*it2);
+                                             queue.push_back((*it2));
+                                            }                  
+                                         }
+                                       }               
+                           }
+                      
+                      
+                      }
+                  
+                  }
+                  
+                  list<int> isolatedNum()
+                  {
+                      list<int> i;
+                     for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                     {
+                       if((*it).size()==1) 
+                       {
+                                           int f=0;
+                         for(std::list< list<int> >:: iterator it1=vertexes.begin(); it1!=vertexes.end();it1++) 
+                         {
+                            if(((*it1).front() != (*it).front()) && help(*it1,(*it).front())) 
+                            f++;              
+                         }   
+                         
+                         if(f==0)
+                         i.push_back((*it).front());
+                           
+                                       
+                       }
+                       
+                                   
+                     }    
+                     return i;
+                  }
+                  
+                  
+                  bool isReachable(int from,int to)
+                  {
+                       
+                          if(from == to)
+                          return true;
+                          
+                          list<int> visited;
+                          
+                          list<int> queue;
+                          
+                          visited.push_back(from);
+                          queue.push_back(from);
+                          
+                          while(!queue.empty())
+                          {
+                                  from=queue.front();
+                                  
+                                  
+                                 
+                                  queue.pop_front();
+                                  
+                                 
+                                  
+                                  
+                                   for(std::list< list<int> >:: iterator it=vertexes.begin(); it!=vertexes.end();it++)
+                                    {
+                                                  
+                                       if(from == (*it).front())
+                                       {
+                                                             
+                                                             
+                                                              
+                                         for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                                          {
+                                            if(*it2 == to)
+                                            return true;   
+                                           
+                                            else if (!help(visited,*it2))
+                                            {
+                                               visited.push_back(*it2);
+                                               queue.push_back(*it2);                                     
+                                            }            
+                                                            
+                                          }
+                                       }                        
+                                    }
+                          }
+                                    
+                                    return false;
+                  }
+                          
+                         
+      
+      
+                  };
+                  
+         
+         
+         Graph reverse(Graph a)
+         {
+              for(std::list< list<int> >:: iterator it=a.vertexes.begin(); it!=a.vertexes.end();it++) 
+              {
+                    for(std::list<int>:: iterator it2=(*it).begin(); it2!= (*it).end();it2++)
+                    {
+                         if((*it).front() > (*it2))    
+                         {
+                               for(std::list< list<int> >:: iterator it3=a.vertexes.begin(); it3!=a.vertexes.end();it3++)
+                               {
+                                  if((*it3).front()==(*it2)) 
+                                  (*it3).push_back((*it).front());            
+                               }          
+                         }            
+                    }               
+              } 
+              return a;
+         }
+
+int main(int argc, char *argv[])
+{
+    list<int> b;
+    b.push_back(7);
+    b.push_front(4);
+    
+    list<int> c;
+    
+   // c.push_back(98);
+    c.push_back(4);
+    c.push_front(5);
+   
+    list<int> d;
+    d.push_back(4);
+    d.push_back(6);
+    d.push_back(8);
+    d.push_front(7);
+    
+    list<int> e;
+    e.push_back(8);
+    e.push_front(6);
+    
+    list<int> f;
+    
+    f.push_back(7);
+    f.push_back(4);
+    f.push_front(8);
+    
+    list<int> g;
+    g.push_back(98);
+    
+    list<int> h;
+    h.push_back(70);
+    
+    
+    Graph a;
+    a.addVertex(b);
+    a.addVertex(c);
+    a.addVertex(d);
+    a.addVertex(e);
+    a.addVertex(f);
+    a.addVertex(g);
+    a.addVertex(h);
+    
+    list<int> bb=a.isolatedNum();
+    for(std::list<int>::iterator it=bb.begin();it!=bb.end();it++)
+    {
+    //cout<<(*it)<<",";
+    }
+    
+    cout<<"||||||";
+    //a.DFS(6);
+    
+    if(a.isReachable(5,8))
+    {
+   // cout<<"Yep";
+    }
+    
+    a.print();
+    cout<<endl<<"END";
+    
+    reverse(a);
+    
+    reverse(a).print();
+    
+   
+    system("PAUSE");
+    return EXIT_SUCCESS;
+}
