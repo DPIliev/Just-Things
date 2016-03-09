@@ -1,0 +1,145 @@
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+
+class minHeap
+{
+    private:
+            int* array;
+            int size;
+    public:
+           minHeap()
+           {
+            size=0;
+            array=new int[size];         
+           }
+          
+           int leftChild(int parentIndex)
+           {
+               return 2*parentIndex+1;    
+           }  
+           
+           int rightChild(int parentIndex)
+           {
+               return 2*parentIndex+2;    
+           }  
+           
+           int parent(int childIndex)
+           {
+              return (childIndex-1)/2;    
+           }
+           
+           void HeapSortDown(int parent)
+           {
+                if(parent>=size)
+                return;
+                
+               
+             
+                
+              if((array[parent]>array[leftChild(parent)])||(array[parent]>array[rightChild(parent)])) 
+              {
+                     if(rightChild(parent)>=size)   
+                     return;                                                                              
+                 if(array[leftChild(parent)]>array[rightChild(parent)]) 
+                 {              
+                                                                                                    
+                 swap(array[parent],array[rightChild(parent)]);
+                 HeapSortDown(rightChild(parent));
+                 }
+                 
+                 else
+                 {
+                     if(leftChild(parent)>=size)   
+                     return; 
+                     
+                 swap(array[parent],array[leftChild(parent)]);
+                 HeapSortDown(leftChild(parent));
+                 }
+                                                                                                  
+              }            
+           }
+           
+           void HeapSortUp(int child)
+           {
+                if(child>=size)
+                return;
+                
+              if(array[child]<array[parent(child)])
+              {
+              swap(array[child],array[parent(child)]);
+              HeapSortUp(parent(child));    
+              } 
+           }
+           
+           void addElement(int element)
+           {
+             array[size++]= element; 
+             HeapSortUp(size-1); 
+           }
+           
+           void removeMin()
+           {
+              swap(array[0],array[size-1]);
+              int* temp=new int[size-1];
+              
+              for(int i=0;i<size-1;i++)
+              temp[i]=array[i];
+              array=temp;
+              
+              size--;
+              
+              
+              
+              HeapSortDown(0);
+              
+              
+              
+           }
+           
+           void heapify(int a[],int _size)
+           {
+               for(int i=0;i<_size;i++) 
+               {
+                     addElement(a[i]);
+               }
+           }
+           
+           void print()
+           {
+              for(int i=0;i<size;i++)
+              cout<<array[i]<<",";     
+           }
+};
+
+
+
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    int a[9];
+    
+    a[0]=9;
+    a[1]=8;
+    a[2]=7;
+    a[3]=6;
+    a[4]=5;
+    a[5]=4;
+    a[6]=3;
+    a[7]=2;
+    a[8]=1;
+    
+    minHeap b;
+    b.heapify(a,9);
+    b.print();
+    cout<<endl;
+    b.removeMin();
+   b.print();
+
+    
+    system("PAUSE");
+    return EXIT_SUCCESS;
+}
