@@ -1,0 +1,148 @@
+#include <cstdlib>
+#include <iostream>
+#include <queue>
+#include <list>
+
+using namespace std;
+
+void simulation(int period)
+{
+     queue <int> takeoff1;
+     queue <int> landing1;
+     queue <int> takeoff;
+     queue <int> landing;
+      
+     int numtoff=0;
+     int numlanding=0;      
+     list<int> avglandwait;
+     int numleftToff=0; 
+     int numleftLand=0;
+     
+     int t=0;
+     
+     while (t<period) 
+     {
+         int f=t;
+         
+         t=rand()%(period+1);
+         
+         while(t<f)  
+         t=rand()%(period+1);
+         
+         cout<<t<<",";
+         
+         if(t>period)
+         break;
+                    
+         
+         
+         
+         int q=rand()%2;
+         
+         if(q==0)
+         {
+           takeoff1.push(t);        
+         }
+         else
+         {
+           landing1.push(t);                      
+         }
+         
+           
+     }
+     
+     cout<<endl;
+    
+    
+     for(int i=0;i<=period;i++)
+     {
+             
+       if(!landing1.empty())
+       {
+          if(landing1.front()==i)
+          {
+             while(landing1.front()==i)
+             {
+             landing.push(landing1.front());
+             landing1.pop();
+             }                       
+          }
+          
+          if(takeoff1.front()==i)
+          {
+             while(takeoff1.front()==i)
+             {
+             takeoff.push(takeoff1.front());
+             takeoff1.pop();
+             }                       
+          }
+          
+          if(!landing.empty())
+          {
+              avglandwait.push_back(i-landing.front());    
+              landing.pop();  
+              numlanding++;        
+          }
+          else if(!takeoff.empty())  
+          {
+             takeoff.pop();
+             numtoff++;          
+          }              
+       }   
+            
+     
+     
+       else if(landing1.empty() && !(takeoff1.empty()))
+       {
+           if(takeoff1.front()==i)
+          {
+             while(takeoff1.front()==i)
+             {
+             takeoff.push(takeoff1.front());
+             takeoff1.pop();
+             }                       
+          }
+          
+           if(!landing.empty())
+          {
+              avglandwait.push_back(i-landing.front());    
+              landing.pop();  
+              numlanding++;        
+          }
+          else if(!takeoff.empty())
+          {
+             takeoff.pop();
+             numtoff++;          
+          }                
+       }
+     
+     }
+     
+     cout<<"Number of planes which toke off:"<<numtoff<<endl;
+     cout<<"Number of planes which landed:"<<numlanding<<endl;
+     
+     double average=0.0;
+     for(std::list<int>::iterator it=avglandwait.begin();it!=avglandwait.end();it++)
+     average+=(*it);
+     
+     cout<<"Average time waiting to land:"<<average/avglandwait.size()<<endl;
+     cout<<"Num of planes left to take off:"<<takeoff.size()<<endl;
+     cout<<"Num of planes left to land:"<<landing.size()<<endl;
+     
+     
+     
+     
+     
+   
+     
+}
+
+int main(int argc, char *argv[])
+{
+    simulation(100);
+   
+    
+    
+    system("PAUSE");
+    return EXIT_SUCCESS;
+}
